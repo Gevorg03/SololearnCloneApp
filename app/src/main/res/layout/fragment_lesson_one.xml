@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_section"
+    tools:context=".fragments.lessons.LessonOneFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".fragments.lessons.LessonOneFragment">
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_lesson1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/tv_lesson_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/lesson_name"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_lesson2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative_layout_lesson1"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_text"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/tv_lesson2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/lorem_ipsum"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                tools:ignore="NotSibling" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_lesson3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative_layout_lesson2"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_text"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/tv_lesson3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/lorem_ipsum"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
