@@ -12,5 +12,9 @@
     <color name="gray">#5E605D</color>
     <color name="red">#FF0000</color>
     <color name="pink">#D600C9</color>
+    <color name="header_background">#661488</color>
+    <color name="dark_pink">#88057B</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#D600C9</color>
+    <color name="background_section">#272727</color>
+    <color name="background_item_section">#333a40</color>
 </resources>

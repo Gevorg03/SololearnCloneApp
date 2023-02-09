@@ -14,8 +14,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:theme="@style/Theme.SololearnClone.AppBarOverlay"
             tools:ignore="MissingConstraints">
 
@@ -23,7 +27,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/pink"
+                android:background="@color/dark_pink"
                 app:popupTheme="@style/Theme.SololearnClone.PopupOverlay">
 
             </androidx.appcompat.widget.Toolbar>
@@ -40,7 +44,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
             app:navGraph="@navigation/mobile_navigation" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -49,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/background_section"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />

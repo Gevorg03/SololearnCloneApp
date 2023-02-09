@@ -1,4 +1,4 @@
-package com.example.sololearnclone
+package com.example.sololearnclone.fragments
 
 import android.app.AlertDialog
 import android.content.Context
@@ -7,23 +7,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.sololearnclone.ClickedChange
+import com.example.sololearnclone.R
 import com.example.sololearnclone.databinding.FragmentLoginBinding
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class LoginFragment : Fragment(), ClickedChange {
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private var binding: FragmentLoginBinding? = null
     private lateinit var auth: FirebaseAuth
-    private var isFailed: Boolean = false
-    private var isDialogOpen: Boolean = false
+    private var isFailed: Boolean = false //if there is any field that empty
+    private var username = ""
+    private var phone = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,10 +47,16 @@ class LoginFragment : Fragment(), ClickedChange {
 
         return FragmentLoginBinding.inflate(inflater, container, false)
             .also { binding = it }.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val drawerLayout: DrawerLayout? = activity?.findViewById(R.id.drawer_layout)
+        drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        val actionBar = (activity as AppCompatActivity).supportActionBar
+        actionBar?.setHomeButtonEnabled(false)
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+
         binding?.run {
             etEmail.isClickedChange(layoutEmail)
             etPass.isClickedChange(layoutPass)
@@ -63,13 +83,15 @@ class LoginFragment : Fragment(), ClickedChange {
                 isFailed = false
                 etEmail.isFieldEmpty(layoutEmail)
                 etPass.isFieldEmpty(layoutPass)
-                if (!isFailed) {
+                if (!isFailed && etEmail.text.toString().isNotEmpty() && etPass.text.toString()
+                        .isNotEmpty()
+                ) {
+                    progressBar.visibility = View.VISIBLE
                     auth.signInWithEmailAndPassword(
                         etEmail.text.toString(),
                         etPass.text.toString()
                     )
                         .addOnCompleteListener { p0 ->
-                            progressBar.visibility = View.VISIBLE
                             if (p0.isSuccessful) {
                                 val user = FirebaseAuth.getInstance().currentUser
                                 if (user?.isEmailVerified == true) {
@@ -77,11 +99,23 @@ class LoginFragment : Fragment(), ClickedChange {
                                         requireContext(),
                                         "Successfully logged",
                                         Toast.LENGTH_SHORT
+                                    ).show()
+                                    //create SharedPreference to store user data
+                                    val sharedPref = activity?.getSharedPreferences(
+                                        "userInfo",
+                                        Context.MODE_PRIVATE
                                     )
-                                        .show()
-                                    findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
+                                    val editor = sharedPref?.edit()
+                                    coroutineScope.launch {
+                                        getUserInfo()
+                                        editor?.putString("username", username)
+                                        editor?.putString("phone", phone)
+                                        editor?.apply()
+                                    }
 
+                                    findNavController().navigate(R.id.action_LoginFragment_to_HomeFragment)
                                 } else {
+                                    progressBar.visibility = View.GONE
                                     Toast.makeText(
                                         requireContext(),
                                         "Please, check your email",
@@ -91,20 +125,49 @@ class LoginFragment : Fragment(), ClickedChange {
                                     user?.sendEmailVerification()
                                 }
                             } else {
+                                progressBar.visibility = View.GONE
                                 Toast.makeText(
                                     requireContext(),
                                     "Wrong email or password",
                                     Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                                ).show()
                             }
-                            progressBar.visibility = View.GONE
                         }
                 }
             }
         }
         super.onViewCreated(view, savedInstanceState)
 
+    }
+
+    private suspend fun getUserInfo() = suspendCoroutine { continuation ->
+        val navigationView: NavigationView? = activity?.findViewById(R.id.nav_view)
+        val headerView = navigationView?.getHeaderView(0)
+        val tvFullName = headerView?.findViewById<View>(R.id.tv_fullname) as TextView
+        val tvPhone = headerView.findViewById<View>(R.id.tv_phone) as TextView
+
+        val db = FirebaseDatabase.getInstance()
+        val ref = db.getReference("users")
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data: HashMap<String, String> = snapshot.value as HashMap<String, String>
+                val map = data[auth.uid] as HashMap<String, String>
+                username = map["username"].toString()
+                phone = map["phone"].toString()
+
+                tvFullName.text = username
+                tvPhone.text = phone
+                continuation.resume(username)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please, check your internet connection",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -120,7 +183,6 @@ class LoginFragment : Fragment(), ClickedChange {
     }
 
     private fun showRecoverPasswordDialog() {
-        isDialogOpen = true
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.forget_pass_dialog, null)
         val etEmail = view.findViewById<TextInputEditText>(R.id.et_email)
         val layoutEmail = view.findViewById<TextInputLayout>(R.id.layout_email)
@@ -143,7 +205,6 @@ class LoginFragment : Fragment(), ClickedChange {
         }
 
         btnCancel.setOnClickListener {
-            isDialogOpen = false
             dialog.dismiss()
         }
         dialog.show()
@@ -158,13 +219,15 @@ class LoginFragment : Fragment(), ClickedChange {
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    isDialogOpen = false
-                    Toast.makeText(requireContext(), "Done sent", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Password reset code is send",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     dialog.dismiss()
                 } else {
-                   layout.error = "There is no email"
+                    layout.error = "There is no email"
                 }
             }
     }
-
 }

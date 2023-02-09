@@ -12,12 +12,12 @@
         tools:context=".fragments.LoginFragment">
 
         <TextView
-            android:id="@+id/tv_login"
+            android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="170dp"
+            android:layout_marginTop="120dp"
             android:fontFamily="@font/abril_fatface"
-            android:text="SIGN IN"
+            android:text="@string/sign_in"
             android:textColor="@color/pink"
             android:textSize="40sp"
             android:textStyle="bold"
@@ -43,7 +43,7 @@
             app:errorTextColor="@color/red"
             app:hintTextColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_login">
+            app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_email"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="10dp"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:padding="10dp"
                 android:textColor="@color/white" />
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_security"
                 android:drawablePadding="10dp"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:padding="10dp"
                 android:textColor="@color/white" />
@@ -93,8 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
+            android:text="@string/forgot_pass"
             android:textColor="@color/white"
-            android:text="Forgot Password?"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_pass" />
 
@@ -103,10 +103,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="45dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/btn_sing_up_background"
-            android:text="SIGN IN"
+            android:text="@string/sign_in"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -119,20 +119,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="80dp"
-            android:text="Don't you have an account?"
+            android:text="@string/dont_you_have_acc"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sign_in" />
 
-        <TextView
+        <Button
             android:id="@+id/sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="50dp"
-            android:text="Sign Up"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/transparent"
+            android:text="@string/sign_up"
             android:textColor="@color/red"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/tv_acc"

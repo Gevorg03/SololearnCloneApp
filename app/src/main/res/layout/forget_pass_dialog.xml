@@ -45,9 +45,9 @@
             android:drawableStart="@drawable/ic_email"
             android:drawablePadding="10dp"
             android:hint="Email"
-            android:textColor="@color/white"
             android:inputType="textEmailAddress"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

@@ -1,17 +1,17 @@
-package com.example.sololearnclone
+package com.example.sololearnclone.fragments
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.sololearnclone.ClickedChange
+import com.example.sololearnclone.R
 import com.example.sololearnclone.databinding.FragmentRegistrationBinding
 import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputEditText
@@ -25,13 +25,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-//@AndroidEntryPoint
 class RegistrationFragment : Fragment(), ClickedChange {
     private var binding: FragmentRegistrationBinding? = null
-
     lateinit var auth: FirebaseAuth
     private var user: FirebaseUser? = null
-    private var isFailed: Boolean = false
+    private var isFailed: Boolean = false //if there is any field that empty
 
     private val databaseReference = FirebaseDatabase.getInstance()
         .getReferenceFromUrl("https://sololearnclone-default-rtdb.firebaseio.com/")
@@ -44,28 +42,33 @@ class RegistrationFragment : Fragment(), ClickedChange {
 
         return FragmentRegistrationBinding.inflate(inflater, container, false)
             .also { binding = it }.root
-
     }
 
-    @SuppressLint("SetTextI18n", "ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+
+        val actionBar = (activity as AppCompatActivity).supportActionBar
+        actionBar?.setHomeButtonEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding?.run {
             ccp.registerCarrierNumberEditText(etPhone)
 
-            etFullname.isClickedChange(layoutFullname)
+            etFullName.isClickedChange(layoutFullName)
             etEmail.isClickedChange(layoutEmail)
             etPhone.isClickedChange(layoutPhone)
             etPass.isClickedChange(layoutPass)
 
-            etFullname.doOnTextChanged { text, _, _, _ ->
+            etFullName.doOnTextChanged { text, _, _, _ ->
                 if (text.toString().length < 5) {
-                    layoutFullname.helperText = null
-                    layoutFullname.error = "Minimum length must be at least 5"
+                    layoutFullName.helperText = null
+                    layoutFullName.error = "Minimum length must be at least 5"
+                } else if (text.toString().isBlank()) {
+                    layoutFullName.helperText = null
+                    layoutFullName.error = "The username can not be empty"
                 } else {
-                    layoutFullname.helperText = "Strong username"
-                    layoutFullname.error = null
+                    layoutFullName.helperText = "Strong username"
+                    layoutFullName.error = null
                 }
             }
 
@@ -81,7 +84,7 @@ class RegistrationFragment : Fragment(), ClickedChange {
                 }
             }
 
-            etPhone.doOnTextChanged { text, _, _, _ ->
+            etPhone.doOnTextChanged { _, _, _, _ ->
                 if (!ccp.isValidFullNumber) {
                     layoutPhone.helperText = null
                     layoutPhone.error = "Invalid phone number"
@@ -101,12 +104,13 @@ class RegistrationFragment : Fragment(), ClickedChange {
                 }
             }
 
-            tvLogin.setOnClickListener {
+            btnLogin.setOnClickListener {
                 findNavController().navigate(R.id.action_RegistrationFragment_to_LoginFragment)
             }
+
             btnRegister.setOnClickListener {
                 isFailed = false
-                isFieldEmpty(layoutFullname)
+                isFieldEmpty(layoutFullName)
                 isFieldEmpty(layoutEmail)
                 isFieldEmpty(layoutPhone)
                 isFieldEmpty(layoutPass)
@@ -121,57 +125,63 @@ class RegistrationFragment : Fragment(), ClickedChange {
                         ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             if (!dataSnapshot.value.toString().contains(phone)) {
-                                auth.fetchSignInMethodsForEmail(etEmail.text.toString())
-                                    .addOnCompleteListener { task: Task<SignInMethodQueryResult> ->
-                                        val isNewUser =
-                                            task.result.signInMethods?.isEmpty()
-                                        println(isNewUser)
-                                        if (isNewUser == true) {
-                                            //existEmail(etEmail.text.toString())
-                                            auth.createUserWithEmailAndPassword(
-                                                etEmail.text.toString(),
-                                                etPass.text.toString()
-                                            )
-                                                .addOnCompleteListener { task: Task<AuthResult> ->
-                                                    if (task.isSuccessful) {
-                                                        val uid = auth.currentUser?.uid
-                                                        databaseReference.child("users")
-                                                            .child(uid.toString())
-                                                            .child("username")
-                                                            .setValue(etFullname.text.toString())
-                                                        databaseReference.child("users")
-                                                            .child(uid.toString())
-                                                            .child("phone")
-                                                            .setValue(phone)
-                                                        val us =
-                                                            FirebaseAuth.getInstance().currentUser
-                                                        us?.sendEmailVerification()
-                                                        etFullname.clearData(layoutFullname)
-                                                        etEmail.clearData(layoutEmail)
-                                                        etPhone.clearData(layoutPhone)
-                                                        etPass.clearData(layoutPass)
-                                                        auth.signOut()
-                                                        findNavController().navigate(R.id.action_RegistrationFragment_to_LoginFragment)
-                                                        Toast.makeText(
-                                                            requireContext(),
-                                                            "Successfully registered, please, check your email end verify to login",
-                                                            Toast.LENGTH_SHORT
-                                                        ).show()
-                                                    } else {
-                                                        layoutEmail.requestFocus()
-                                                        layoutEmail.error =
-                                                            "Invalid Email"
-                                                        layoutEmail.helperText = null
+                                if (etEmail.text.toString().isNotEmpty()) {
+                                    auth.fetchSignInMethodsForEmail(etEmail.text.toString())
+                                        .addOnCompleteListener { task: Task<SignInMethodQueryResult> ->
+                                            val isNewUser =
+                                                task.result.signInMethods?.isEmpty()
+                                            if (isNewUser == true) {
+                                                auth.createUserWithEmailAndPassword(
+                                                    etEmail.text.toString(),
+                                                    etPass.text.toString()
+                                                )
+                                                    .addOnCompleteListener { taskRes: Task<AuthResult> ->
+                                                        if (taskRes.isSuccessful) {
+                                                            val uid = auth.currentUser?.uid
+                                                            //add data in firebase database
+                                                            databaseReference.child("users")
+                                                                .child(uid.toString())
+                                                                .child("username")
+                                                                .setValue(etFullName.text.toString())
+                                                            databaseReference.child("users")
+                                                                .child(uid.toString())
+                                                                .child("phone")
+                                                                .setValue(phone)
+                                                            val us =
+                                                                FirebaseAuth.getInstance().currentUser
+                                                            us?.sendEmailVerification()
+
+                                                            etFullName.clearData(layoutFullName)
+                                                            etEmail.clearData(layoutEmail)
+                                                            etPhone.clearData(layoutPhone)
+                                                            etPass.clearData(layoutPass)
+
+                                                            auth.signOut()
+                                                            findNavController().navigate(R.id.action_RegistrationFragment_to_LoginFragment)
+                                                            Toast.makeText(
+                                                                requireContext(),
+                                                                "Successfully registered, please, check your email and verify to login",
+                                                                Toast.LENGTH_SHORT
+                                                            ).show()
+                                                        } else {
+                                                            progressBar.visibility = View.GONE
+                                                            layoutEmail.requestFocus()
+                                                            layoutEmail.error =
+                                                                "Invalid Email"
+                                                            layoutEmail.helperText = null
+                                                        }
                                                     }
-                                                }
-                                        } else {
-                                            layoutEmail.requestFocus()
-                                            layoutEmail.error =
-                                                "The email already exists"
-                                            layoutEmail.helperText = null
+                                            } else {
+                                                progressBar.visibility = View.GONE
+                                                layoutEmail.requestFocus()
+                                                layoutEmail.error =
+                                                    "The email already exists"
+                                                layoutEmail.helperText = null
+                                            }
                                         }
-                                    }
+                                }
                             } else {
+                                progressBar.visibility = View.GONE
                                 layoutPhone.requestFocus()
                                 layoutPhone.error =
                                     "The phone already exists"
@@ -180,16 +190,17 @@ class RegistrationFragment : Fragment(), ClickedChange {
                         }
 
                         override fun onCancelled(error: DatabaseError) {
-                            TODO("Not yet implemented")
-                        }
+                            Toast.makeText(
+                                requireContext(),
+                                "Please, check your internet connection",
+                                Toast.LENGTH_SHORT
+                            ).show()                        }
                     })
                 }
-                progressBar.visibility = View.GONE
             }
         }
         super.onViewCreated(view, savedInstanceState)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -204,7 +215,7 @@ class RegistrationFragment : Fragment(), ClickedChange {
 
     private fun isValidPassword(password: String): String {
         return when {
-            password.length < 8 -> "Min len is "
+            password.length < 8 -> "The minimum length must be at least 8"
             password.firstOrNull { it.isDigit() } == null -> "It must have at least 1 digit"
             password.filter { it.isLetter() }
                 .firstOrNull { it.isUpperCase() } == null -> "It must have at least 1 uppercase "
@@ -213,22 +224,6 @@ class RegistrationFragment : Fragment(), ClickedChange {
             password.firstOrNull { !it.isLetterOrDigit() } == null -> "It must have one special character like"
             else -> "Ok"
         }
-    }
-
-    fun showKeyboard(et: TextInputEditText) {
-        et.requestFocus()
-        val imm =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-        //imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-    }
-
-    private fun existEmail(email: String) {
-        auth.fetchSignInMethodsForEmail(email)
-            .addOnCompleteListener { task: Task<SignInMethodQueryResult> ->
-                val isNewUser = task.result.signInMethods?.isNotEmpty()
-                println(isNewUser)
-            }
     }
 
     private fun isFieldEmpty(textInputLayout: TextInputLayout) {
