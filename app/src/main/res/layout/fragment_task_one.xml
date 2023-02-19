@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_section"
+    tools:context=".fragments.lessons.TaskOneFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".fragments.lessons.LessonOneFragment">
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_lesson1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/tv_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/first_question"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </RelativeLayout>
+
+        <RadioGroup
+            android:id="@+id/radio_group_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relative_layout_lesson1"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="60dp"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radio_true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/true_answer"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/radio_false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/false_answer"
+                android:textColor="@color/white" />
+        </RadioGroup>
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radio_group_check"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="350dp"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/btn_check"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_sing_up_background"
+                android:text="@string/check"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>

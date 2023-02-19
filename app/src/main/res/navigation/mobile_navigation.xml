@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_splash">
+
+    <fragment
+        android:id="@+id/nav_splash"
+        android:name="com.example.sololearnclone.fragments.SplashFragment"
+        android:label="Sololearn"
+        tools:layout="@layout/fragment_splash">
+
+        <action
+            android:id="@+id/action_SplashFragment_to_LoginFragment"
+            app:destination="@id/nav_login"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_SplashFragment_to_HomeFragment"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_registeration"
+        android:name="com.example.sololearnclone.fragments.RegistrationFragment"
+        android:label="Sololearn"
+        tools:layout="@layout/fragment_registration">
+
+        <action
+            android:id="@+id/action_RegistrationFragment_to_LoginFragment"
+            app:destination="@id/nav_login"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.sololearnclone.fragments.LoginFragment"
+        android:label="Sololearn"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_LoginFragment_to_RegistrationFragment"
+            app:destination="@id/nav_registeration" />
+
+        <action
+            android:id="@+id/action_LoginFragment_to_HomeFragment"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.sololearnclone.fragments.HomeFragment"
+        android:label="Sololearn"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_HomeFragment_to_SectionFragment"
+            app:destination="@id/nav_section" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_sign_out"
+        android:name="com.example.sololearnclone.fragments.SignOutFragment"
+        android:label="Sololearn">
+
+        <action
+            android:id="@+id/action_GalleryFragment_to_LoginFragment"
+            app:destination="@id/nav_login"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_section"
+        android:name="com.example.sololearnclone.fragments.SectionFragment"
+        android:label="Kotlin"
+        tools:layout="@layout/fragment_section">
+
+        <action
+            android:id="@+id/action_SectionFragment_to_LessonFragment"
+            app:destination="@id/nav_lesson" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_lesson"
+        android:name="com.example.sololearnclone.fragments.LessonFragment"
+        android:label="Kotlin"
+        tools:layout="@layout/fragment_lesson">
+
+        <action
+            android:id="@+id/action_LessonFragment_to_SectionFragment"
+            app:destination="@id/nav_section"
+            app:popUpTo="@id/nav_home" />
+    </fragment>
+
+</navigation>

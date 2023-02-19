@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_section"
+    tools:context=".fragments.lessons.CompilerFragment">
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/compiler_question"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+    <com.amrdeveloper.codeview.CodeView
+        android:id="@+id/codeView"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@+id/tv_question"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:dropDownWidth="150dp"
+        android:textColor="@color/white"
+        android:dropDownHorizontalOffset="0dp"
+        android:dropDownSelector="@android:color/holo_green_dark"
+        android:gravity="top|start" />
+
+    <Button
+        android:id="@+id/btn_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/codeView"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_sing_up_background"
+        android:text="@string/check"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

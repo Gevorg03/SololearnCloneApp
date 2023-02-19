@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_section"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/drag_drop_question"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_answer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_question"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/background_section">
+
+        <LinearLayout
+            android:id="@+id/layout_first_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_view_first_answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="               "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="('"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/layout_second_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_view_second_answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="                        "
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="')"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_other_part"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_answer"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_words"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="412dp"
+            android:background="@color/background_drag_text">
+
+            <TextView
+                android:id="@+id/tv_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="console"
+                android:textColor="@color/green"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_screen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="screen"
+                android:textColor="@color/green"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_print"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="println"
+                android:textColor="@color/green"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_system"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="System"
+                android:textColor="@color/green"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_kotlin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Kotlin is fun"
+                android:textColor="@color/green"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/btn_sing_up_background"
+            android:text="@string/check"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</RelativeLayout>

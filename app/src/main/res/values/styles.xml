@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#D600C9</item>
+        <item name="boxStrokeWidth">2dp</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="CorrectButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <style name="WrongButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/red</item>
+    </style>
+</resources>
